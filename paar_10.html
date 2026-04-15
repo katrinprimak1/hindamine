@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intervjuude hindamine — paar 10</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+    margin: 0; padding: 0;
+    background: #f4f1ea;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #1a1a1a; line-height: 1.7;
+}
+.app { max-width: 780px; margin: 0 auto; padding: 32px 24px 80px 24px; }
+.card {
+    background: #ffffff; border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 36px 44px; margin-bottom: 24px;
+}
+@media (max-width: 640px) {
+    .app { padding: 16px 12px 60px 12px; }
+    .card { padding: 24px 20px; }
+}
+h1 { font-size: 28px; margin: 0 0 16px 0; color: #111; font-family: Arial, Helvetica, sans-serif; line-height: 1.3; }
+h2 { font-size: 22px; margin: 32px 0 12px 0; color: #111; font-family: Arial, Helvetica, sans-serif; padding-bottom: 8px; border-bottom: 2px solid #333; }
+h3 { font-size: 18px; margin: 24px 0 8px 0; color: #222; font-family: Arial, Helvetica, sans-serif; }
+h4 { font-size: 16px; margin: 20px 0 8px 0; color: #2c5282; font-family: Arial, sans-serif; }
+p { margin: 12px 0; font-size: 17px; }
+.meta { font-size: 13px; color: #888; font-family: Arial, sans-serif; letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 6px 0; }
+.tpb { font-style: italic; font-size: 14px; color: #666; margin: -8px 0 16px 0; }
+.qa { margin: 20px 0; }
+.qa .question { font-size: 16px; color: #444; font-style: italic; margin: 0 0 6px 0; }
+.qa .question strong { font-style: normal; font-family: Arial, sans-serif; font-size: 14px; color: #2c5282; }
+.qa .answer { font-size: 17px; color: #1a1a1a; margin: 0; white-space: pre-wrap; }
+.qa .answer strong { font-family: Arial, sans-serif; font-size: 14px; color: #555; }
+.qa.intervjueerija .question { color: #666; font-style: normal; font-size: 15px; border-left: 3px solid #cbd5e0; padding-left: 12px; }
+.btn {
+    display: inline-block; padding: 14px 36px;
+    background: #2c5282; color: #fff; border: none; border-radius: 4px;
+    font-size: 16px; font-family: Arial, sans-serif; cursor: pointer;
+    margin: 16px 0;
+}
+.btn:hover { background: #1a365d; }
+.btn:disabled { background: #a0aec0; cursor: not-allowed; }
+.rating-box {
+    background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 6px;
+    padding: 20px 24px; margin: 24px 0;
+}
+.rating-item { margin: 16px 0; }
+.rating-item p { font-size: 15px; margin: 0 0 8px 0; font-family: Arial, sans-serif; }
+.rating-scale { display: flex; gap: 8px; align-items: center; }
+.rating-scale label {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border: 2px solid #d0d0d0; border-radius: 4px;
+    cursor: pointer; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #555;
+    transition: all 0.15s;
+}
+.rating-scale label:hover { background: #ebf5ff; border-color: #2c5282; }
+.rating-scale input[type="radio"] { display: none; }
+.rating-scale input[type="radio"]:checked + .num {  }
+.rating-scale label:has(input:checked) { background: #2c5282; color: #fff; border-color: #2c5282; }
+.scale-info { font-size: 12px; color: #888; font-family: Arial, sans-serif; margin: 4px 0 12px 0; }
+.form-field { margin: 20px 0; }
+.form-field label { display: block; font-family: Arial, sans-serif; font-size: 15px; margin-bottom: 6px; color: #333; }
+.form-field textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 4px;
+    font-family: Georgia, serif; font-size: 16px; background: #fff;
+    min-height: 100px; resize: vertical;
+}
+.consent-options { margin: 16px 0; }
+.consent-options label {
+    display: block; padding: 12px 16px; margin: 8px 0;
+    border: 2px solid #d0d0d0; border-radius: 4px; cursor: pointer;
+    font-family: Arial, sans-serif; font-size: 16px;
+}
+.consent-options label:hover { background: #f7fafc; }
+.consent-options label:has(input:checked) { background: #ebf5ff; border-color: #2c5282; }
+.consent-options input[type="radio"] { margin-right: 10px; }
+.progress {
+    background: #fff; border-radius: 4px; padding: 12px 16px; margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05); font-family: Arial, sans-serif; font-size: 14px; color: #555;
+}
+.progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.progress-bar-fill { height: 100%; background: #2c5282; transition: width 0.3s; }
+.error-msg {
+    background: #fef5f5; border-left: 4px solid #e53e3e; padding: 12px 16px;
+    margin: 16px 0; color: #742a2a; font-family: Arial, sans-serif; font-size: 14px;
+}
+.success-msg {
+    background: #f0fff4; border-left: 4px solid #38a169; padding: 16px 20px;
+    margin: 16px 0; color: #22543d; font-family: Arial, sans-serif;
+}
+.hidden { display: none !important; }
+.notice {
+    background: #fffaf0; border-left: 4px solid #d69e2e; padding: 14px 18px;
+    margin: 20px 0; font-size: 15px; font-family: Arial, sans-serif; color: #744210;
+}
+ul, ol { font-size: 16px; padding-left: 24px; }
+li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="app">
+<div id="progress-container"></div>
+<div id="content"></div>
+</div>
+
+<script>
+const FORMSPREE_URL = "https://formspree.io/f/mvzdggww";
+const INTERVIEW_A = {"id": "real_Lilian", "label": "Lilian", "blocks": [{"nr": 1, "title": "SISSEJUHATUS JA TAUST", "tpb": null, "qa": [{"type": "k", "k": "K1", "q": "Kirjelda palun oma ettevõtet – millega see tegeleb ning milline on sinu enda roll ettevõttes.", "a": "Ettevõte tegeleb siis nii videokursuste kui laiekoolituste pakkumisega. Ja võib öelda ka oma sündmuste korraldamisega, meil on endal selline alambränd, mis on siis selline suurem füüsiline sündmus ja konverents. Et jah, need on peamised tegevused."}, {"type": "k", "k": "K2", "q": "Millised on teie peamised kliendid ja kuidas sa nendega kokku puutud.", "a": "Peamisteks klientideks on lapsevanemad ja õpetajad. Enamasti puutun kokku meiliteel, lähevadki need turunduskirjad välja. Tuleb ka, et kohtun koolijuhtidega, õpetajatega, kui on vaja. Ja tegelikult, mis mulle endale meeldib, teen vahepeal ka kõnesid, et aru saada ja tunnetada seda kontakti kuidagi."}]}, {"nr": 2, "title": "PRAEGUNE ARENDUSPRAKTIKA", "tpb": "TPB: Behaviour (tegelik käitumine)", "qa": [{"type": "k", "k": "K4", "q": "Mõtle oma ettevõtte tavapärase toote/teenuse arendusele ja kirjelda palun, kuidas see protsess kujuneb algusest lõpuni.", "a": "Ma arvan, et kõigepealt on vaja aru saada sellest valupunktist. Kuna meil tänaseks on juba võrdlemisi suur kontaktbaas, klientide list, siis sealt tulevad ka tagasisidena mingid valukohad välja, küsimused. Või tihtipeale viime ka ise mingeid regulaarseid küsitlusi läbi, et aru saada, mis siis on selle sihtgrupi kõige suuremad väljakutsed. Ja sealt siis hakkame seda teenust arendama, et see on mingi koolitusprogramm, on see siis, ma ei tea, ühekordne veebiseminar, on vajadus näiteks mingi tasuta konverentsi järele, mis nõuab sellist üldisemat ühiskondlikku vaadet. Et sealt sellest valupunktist saab alguse ja siis hakkame mõtlema, mis on võib-olla need lahendused, mida me pakume vastu sellele valupunktile. Ja selle lahenduse põhiselt siis hakkame, nii-öelda, teenust üles ehitama või siis kursust. Ja selle raames ka sisend kliendilt ongi siis kas selle küsitluse või e-kirjade näol. Teenistan kõnesid. Ja siis selle põhjal, kui me räägime konkreetsest kursusest või programmist, tekib siis üks maandumisleht ja seda, nii-öelda, hakkame siis müüma. Seal on juba nagu valmis toode taga."}, {"type": "k", "k": "K5", "q": "Kuidas te püüate aru saada, mida kliendid või kasutajad tegelikult vajavad?", "a": "Kindlasti number üks on see, et ühiskondlikus vaates tekivad mingid valupunktid. Kas ajakirjandus kajastab, või tuleb kuskilt võib-olla selle sama segmendiga suheldes valu välja. Et mingit sellist regulaarset teenusedisaini või kliendivajaduste kaardistamist me ei tee. Pigem see on nagu vajaduse ja tunnetuse põhine, et kuskilt tuleb see signaal, sa võtad sellest signaalist kinni ja sealt hakkab siis kojad, nii-öelda, lahti hargnema. Et kui me vaatame näiteks meie konverentsi, mis toimub sellel aastal nüüd kuuendat korda, et esimesel aastal oli näiteks iga aasta on mingit peateemat. Esimesel aastal oli näiteks \"väärtustades iseennast\" ja kuna siis oli näiteks õpetajate palgateema hästi tugevalt üleval, et siis me sidusimegi selle õpetajate palga teemaga. Ja enne seda siis samamoodi jälle viisime küsitluse läbi ja siis see jõudis veel sinna välja, et kas lapsevanemad on valmis toetama õpetajate palgastreiki. Et ühesõnaga see kuidagi läks selliseks laiemaks ühiskondlikuks teemaks. Aga pigem nad tulevad kuskilt signaalidena, jah, ja sa püüad need signaalid kinni. Ja siis võib-olla läheb nagu selle segmendipõhiselt sügavamaks. Teine võimalus on see, et klient ise räägib sulle enda vajadusest. Et kui meie ettevõte sai alguse koroona ajal, me pakkusime alguses videokursuseid õpetajatele. Koolijuht oli muidugi see, kes otsustas. Et ma käisin ka, külastasin, mis see tuleb, kuuekümne koolijuhi juures vist, pakkusin seda meie kursust müügiks. Ja järjest rohkem hakkasin saama signaali, et õpetajad ei jaksa enam veebis olla, me ei jaksa enam videot vaadata. Ja siis me istusime meeskonnaga maha ja ma ütlesin meie tiimile, et kuulge, me ei saa nagu edasi niimoodi müüa, et meil on vaja mingit muutust siia kõrvale. Ja saime aru, et meil on vaja nagu füüsilist sündmust. Sealt sündis meie konverents, mis siis omakorda nagu toetas seda veebikursuse müüki. Et tekkisid nagu paralleelsed sündmused ja täna on sellel konverentsil täiesti eraldi kaubamärk ja eraldi väärtus."}, {"type": "k", "k": "K6", "q": "Kirjelda ühte hiljutist arendamise teekonda algusest kuni arenduse lõpuni.", "a": "Kuna me konverentsi oleme teinud, siis me mõtlesime, et tegelikult võiks ka lastevanematele, kuna konverents on puhtalt haridustöötajatele, et siis võiks ka lastevanematele olla selline suurem konverents. Ja planeerisime seda kevadeks. Aga siis kuidagi tekkis see tunne, et ma olen ikkagi liiga suure ampsu võtnud ja ei tea, et kas see probleem on lastevanematel olemas, ega me suudame selle kontseptsiooni korralikult kokku panna. Aga ma ise olin juba käinud kohaliku omavalitsusega kohtumas ka, et nemad ütlesid, et see on tegelikult ülioluline, et me lastevanematega tegeleme, sellepärast et kui paljuski tegeletakse õpetajatega, siis lastevanemate osa on jäänud tahaplaanile ja õpetajad on kõige suurema valukohana välja toonud suhteid lastevanematega. Ehk siis ka kohalik omavalitsus tegelikult on nagu sellel asjal üleval ja nad olid valmis siis ka kampa lööma. Aga kuna aeg oli nii vähe, siis ma sain aru, et ikkagi me seda konverentsi teha ei jõua. Ja kevad tuli peale ja jälle ikkagi see sama ühiskondlik teema, tekib neid koolilõpu ja eriti eksamiärevuse ja eksamitulemustega seotud väljakutseid. Ja siis ma mõtlesin, et paneme siis kokku programmi \"noore enesekindlus\" ja \"eksamirahu\". Ja hakkasime siis seda arendama. Kuna meil see ka arendamistsükkel on hästi sarnane läbivalt erinevate programmidega, et kõigepealt tulebki see teema olulisus, see valupunkt, ja siis sa hakkad sinna taha neid lektoreid otsima. Saimegi hästi head lektorid. Et ühesõnaga siis lõpuks tekkiski selline eksamirahuprogramm kokku. Ja täna ma näen, et see on täiesti nagu litsenseeritav. Et kogu see sisukool, ja kuna jah, noored on selle enesekindluse ja ärevuse ja suoritusega kimpus, et siis oli ka nagu lahendus sellele valupunktile."}, {"type": "interv", "k": "K6.1", "q": "Keda ja miks te kaasasite?", "a": "Programmi oligi strateegilise partnerina kaasatud kohalik omavalitsus. Programmi olid kaasatud koolitajad. Ja programmi oli tegelikult kaasatud ka arendaja, kes siis, ütleme, seda maandumislehte seal vormistab või ette valmistab, et mingil määral see nõuab ikkagi arendustegevust ka. Turunduse ma tegin ise, kuigi turundusinimene oleks kasuks, aga mina mitmes isiksuses. Et jah, põhiline oligi kohalik omavalitsus, koolitajad ja arendaja. Nii palju küll, et kuna meil endal on ka tellimusel põhinev teenus ja selle liikmetele oli selles programmis osalemine, nii-öelda, tasuta, siis ma tegin need ankeedid valmis. Et mis on nende väljakutsed ka seoses selle eksami ja koolilõpuga ja ärevusega, mis teemasid nemad näevad, et nende jaoks on oluline, mis on nende ja nende laste suurimad väljakutsed."}, {"type": "interv", "k": "K6.2", "q": "Millest lähtusid otsuse tegemisel ja miks?", "a": "Kindlasti oli see ajaline faktor, et me alati vaatame ka, et millisel ajahetkel millised teemad on enam-vähem aktuaalsed. Kindlasti jah, sellest kasutaja, nii-öelda, väljakutsest. Et me teadsime ju, et eksamite lõpuperiood hakkab tulema ja tehes siis erinevaid uuringuid või otsides sarnaseid programme, siis tegelikult midagi sarnast ei leidnud. Et ei olnud neid alternatiive ka palju. Et sellepärast ka kohalik omavalitsus arvas, et nad võiksid kaasas olla, et kuna oli oluline teema, aga meil endale jätku ressurssi, et siis, nii-öelda, valmis teha."}]}, {"nr": 3, "title": "KLIENDI JA KASUTAJA ROLL ARENDUSES", "tpb": "TPB: Behaviour + Attitude", "qa": [{"type": "k", "k": "K7", "q": "Kuidas teie arendusmeeskond puutub kokku klientidega?", "a": "Nii palju puutub kokku, et turunduskirju välja saates ja kui tulevad sealt tagasisidet, me näeme, et on selline aktiivsem protsess. Ja näiteks kui on kliendid jaganud neile ka enda kontaktnumbreid, et siis mina olen selline julge helistaja, et alati võtan ka kõne ette. Või on need meie kogukonna liikmed, kellelt uurida siis, et kuidas, mis teemad on praegu teie jaoks olulised, pakuvad väljakutseid, milliseid asju me peame siis rohkem võib-olla fookuses hoidma. Et üks on jah see kõnedesuund ja teises, selle tellimuse osas on meil endal ka Facebooki grupp, kuhu me siis paneme need selle kuu teemad üles. Seal teeme ka erinevaid küsitlusi. Aga seal peab ka ise olema hästi järjepidev, see grupp peab olema siis ikkagi võrdlemisi nii suur, et sealt mingi tagasiside tuleks. Et pigem on nii, et jah, kui sul on see turunduskanal, e-maililist, et siis sina justkui nagu kontrollid seda rohkem. Aga nad on tegelikult, kui mingid kirjad välja saadetavad, suhteliselt aktiivsed ka oma mõtteid ja tagasisidet jagama. On oluline, et kogu aeg keegi operatiivselt vastaks neile."}, {"type": "k", "k": "K8", "q": "Kuidas te klientidega nende vajadustest, probleemidest või kogemustest räägite?", "a": "Ma üldiselt iga sündmus, mis meil toimub, siis me teeme kohe peale sündmust ka sellise tagasisidevormi. Mitte me ei saada seda järgmisel päeval, vaid me saadame nagu vahetult enne lõppu, et see klient on siis nagu rohkem, noh, kas siis teeme selle sama üleskutse vahetult enne siis sündmuse lõppu. Ja siis sinna paneme ka sisse küsimused, et mis teemad on nende jaoks olulised ja kes on need inspireerivad kõnelejad, keda nad jälgivad. Et see on sellises küsimustiku vormis peale igat sündmust, mida me analüüsime ja siis sellest lähtuvalt siis hakkame seda, nii-öelda, üles ehitama."}, {"type": "interv", "k": "K9.2", "q": "Kuidas te tagasisidet rakendate?", "a": "Me oleme analüüsinudki enne seda uut sündmuse kontseptsiooni kokkupanekut läbi ja vaatame, mis on need korduvad, nii-öelda, märksõnad, mis sealt välja tulevad. Ja selle põhjal siis pakume."}, {"type": "k", "k": "K10", "q": "Too palun üks konkreetne näide olukorrast, kus kliendi sisend muutis teie algset plaani, prioriteeti või lahendust. Kirjelda seda olukorda.", "a": "Ma arvan, et kõige parem näitaja ongi seesama, et kui me alustasime koroona ajal, me olime hästi ise kinni justkui selles, et müüme seda videokoolitust ja käime, külastame. Alguses see justkui nagu ei taha kuulata seda klienti ja ikka pakud oma toodet ja proovid leida neid põhjendusi, et miks see on ikkagi hea. Kuna lõpuks on nii, et see tuleb nagu justkui nii tugevalt ja valjult välja, et noh, kui sa tahad nagu oma ettevõttega edasi liikuda, et siis sa pead kliendivajadusest lähtuma, et siis tegema selle otsuse või muudatuse ära. Et kindlasti siin saaks süsteemsemalt. Tuleks nagu veel paremaid kohti välja, kui näiteks teeks regulaarseid intervjuusid klientidega. Aga sinna ei ole jõudnud."}]}, {"nr": 4, "title": "SUHTUMINE TEENUSEDISAINI / KASUTAJAKESKSUSESSE", "tpb": "TPB: Attitude + Behavioural Beliefs", "qa": [{"type": "k", "k": "K11", "q": "Millist väärtust sa näed kasutajakeskses lähenemises? Põhjenda oma arvamust.", "a": "Ma arvan, et see kõige suurem väärtus on see, et kasutaja tunneb seda seotust. Et kasutaja tunneb, et sa saad päriselt tema asjadest aru ja teed asju tema jaoks, mitte ei tee siis enda äranägemise järgi ja võib-olla kasumlikkuse eesmärgil. Et tekiks see lojaalsus, usaldusväärsus ja brändi tuntus läbi tema. Kuidagi tema alateadvuses, et kui tal ongi mingi teema või mingi probleemkoht, et siis ta teab, et äkki see ettevõte tegeleb selle poole. Et päris mitmed kliendid on pöördunud meie poole sellega, et kuule, teie teete ju neid koolitusi, teil on neid häid kontakte, soovitage siis midagi. Et ma arvan, et see kliendikesksus kuidagi jah, tekitab seda usaldusväärsust ka, et kui sa mingeid uusi asju teed, et siis nad suure tõenäosusega ka teevad neid korduvostusid, sellepärast sul on see usaldus ju olemas."}, {"type": "interv", "k": "K11.täpsustav", "q": "Kas oled kunagi kahelnud, et selline lähenemine end ära tasub?", "a": "No eks see ikka võib-olla just nagu alguses, kui sa saad aru, kui ressursimahukas see tegelikult on. Ettevõttes on pidevalt neid, nii-öelda, tulekahjusid, mida kustutada ja inimressurss on üldiselt ju piiratud. Et siis sa mõtled selle peale, et kas sa ikka saad sealt nii palju väärtust, et ma ju suhtlen nagunii pisteliselt klientidega, et miks peaks nagu sellesse minema sügavamalt sisse. Aga samas, kui sa seal protsessis sees oled või mingid osad sealt läbi teinud ja tõesti tekivad ettevõtte näol ka mingid sellised eduelamused või eduprojektid, noh, ma toon jälle siin selle meie konverentsi näite, et kui me oleksime ikkagi seda oma joont ajanud ja klienti mitte kuulanud ja seda, nii-öelda, kasutajakeskset lähenemist mitte rakendanud, siis ei oleks konverents üldse, ma arvan, kus ta on. Või teda ei olekski olemas."}, {"type": "k", "k": "K12", "q": "Millised on sinu meelest kasutajakeskse lähenemise kitsaskohad või piirangud?", "a": "Ma arvan, et piirang ja kitsaskoht ongi tegelikult ettevõtte meeskonna mõttemustrites ja mallides. Et nägime siin ka juhtkonna tasemel sellest, nii-öelda, teadlikkusest, et ära selgitada, et kuidas see siis ettevõttele, nii-öelda, kasu toob. Et kõik peab ju täna numbritesse kirjutama, et kuidas me selle päriselt numbritesse saame panna. Ma arvan, et see on üks kõige suurem piirang. Ja võib-olla piiranguks ka see, et ei ole teadlikkust, et kuidas seda õigesti teha. Ja see sisseost on tihtipeale ka jälle ju üks investeering ja ressurss, et kuidas sa siis, millisel hetkel ja kuidas sa hindad, et seda vaja on."}]}, {"nr": 5, "title": "SOTSIAALSED JA PROFESSIONAALSED MÕJUTAJAD", "tpb": "TPB: Subjective Norm", "qa": [{"type": "k", "k": "K13", "q": "Kuidas sinu meeskond/kolleegid suhtuvad kasutajakesksesse lähenemisse ja miks?", "a": "Ma arvan, et ma olen saanud nii palju tagasisidet. Mis nad on öelnud, et kuna ma hästi hindan seda klientidega rääkimist ja kõnede tegemist, et sa saad otse kontakti, et siis nad on olnud hästi arad alguses, et seda ikkagi telefoni toru võtta ja, et ma ei ole ju müügiinimene. Aga sa ei müügi, sa suhtled kliendiga. Ja tihtipeale võib-olla on raske siis suhelda kliendiga, kui see pöördumine ei ole olnud kõige positiivsem. Aga need on just minu meelest kõige väärtuslikumad õppimiskohad, et kui sa päriselt võtad ennast kokku ja helistad ja te saate nagu läbi kõne selle asja ära lahendatud ja sina saad aru, et sul oli ikkagi mingi hinnang selle inimese või olukorra suhtes. Ja kui sa inimlikult lähened, et siis tekib ikkagi selline positiivne elamus. Et alguses, kui nad on nagu ikkagi vastumeelselt teinud neid kõnesid, et siis ma läbi aja olen ikkagi öelnud, et nii, helistage, helistage. Ja siis juba lõpus ma kuulan seda, et kuule, tegin talle kõne ja. Et siis sa saad aru. Et kindlasti see kõnede tegemise olulisus ja kliendiga otsesuhtlemine, see on olnud see väärtus, mida on olnud alguses võib-olla keeruline teha, aga kuidagi on pärast ikkagi hästi toiminud."}, {"type": "k", "k": "K15", "q": "Kuidas on sinu suhtumist või praktikaid mõjutanud laiem ettevõtluskeskkond, näiteks kiirendid, mentorid, sarnased ettevõtted või konkurendid? Miks?", "a": "Väga, väga palju. Et meie ettevõte kuulub ka ühe ettevõtete võrgustiku hulka, et koos on ikkagi nagu kergem ja neid väljakutseid jagada, kas ühistel koosviibimistel osaleda. Mõju on palju laiem, et võib-olla nendel on mingitesse organisatsioonidesse parem ligipääs kui meil ja mis annab meile nagu rohkem võimalusi. Ja samamoodi need kiirendid, et ikkagi see pildis olemine ja tegutsemine ja sarnaste ettevõtetega rääkimine ja oma ideede jagamine, see igati vahetab."}, {"type": "interv", "k": "K15.1", "q": "Kes on olnud eeskujuks? Miks on eeskuju?", "a": "Ma ei tea, kas mõjutanud on, aga võib-olla mul endal on nagu üks tuntud Eesti ettevõtja jäänud silma ja kõrva, kes täna toimetab minu meelest päris hästi ja kuidagi hoiab sind kaasas."}, {"type": "k", "k": "K16", "q": "Kas sul on olnud formaalne kokkupuude teenusedisaini metoodikaga, koolitused, programmid, meistriklassid vms?", "a": "Ühe teenusedisaini meistriklassis olen osalenud ja see oli väga väärtuslik ja tegelikult jah, sealt kuidagi algaski sügavam selline teenusedisaini sukeldumine. Ja ma olen siis jah, ilmselt sain sealt natukene rohkem teadmisi."}]}, {"nr": 6, "title": "VÕIMEKUS JA BARJÄÄRID", "tpb": "TPB: Perceived Behavioural Control", "qa": [{"type": "k", "k": "K17", "q": "Kirjelda ühte olukorda, kus oleksid tahtnud klienti rohkem kaasata, aga see ei õnnestunud. Mis sai takistuseks ja miks?", "a": "Eelmine suvi, kui me enda selle tellimusel põhineva mudeli tööle käima panime, siis ma väga tahtsin neid intervjuusid läbi viia ja kaardistada need valupunktid ja aru saada, et kuidas siis paremini seda teenust arendada. Et puhtalt ajaline ressurss, et sa ikkagi tegeled nende mingite tulekahjudega, igapäevaste teemadega ja olgugi, et see on sul siin laual ees, siis sa ei jõua selleni ja ei jõua kuu aja pärast, ei jõua kahe kuu pärast. Ja siis nagu justkui tundub, et see teema aktuaalsus on maas, kuigi ta on tegelikult kogu aeg üleval. Aga puhtalt ajaline ressurss on see."}, {"type": "interv", "k": "K17.2", "q": "Millised takistused on praegusel hetkel veel alles?", "a": "Kindlasti."}]}, {"nr": 7, "title": "TULEVIKUVAADE JA KAVATSUSED", "tpb": "TPB: Intention", "qa": [{"type": "k", "k": "K18", "q": "Kuidas soovid muuta tänast protsessi kliendi kaasamise vaates järgmistes arendustöödes?", "a": "Rohkem ettevalmistust. Et jah, võib-olla strateegiliselt selle plaani paremat läbimõtlemist, ajastamist, etappideks kujundamist. Ja ikkagi alustada sellest teenusedisaini osast, et mitte minna nii kiiresti võib-olla kohe nagu seda arendama ja looma, et aga ikkagi panna rohkem ressurssi sinna eelnevatesse etappidesse."}, {"type": "interv", "k": "K18.1", "q": "Milliseid konkreetseid tegevusi oled juba alustanud või planeerinud?", "a": "Ei ole planeerinud."}, {"type": "k", "k": "K19", "q": "Milliseid takistusi näed kliendi kaasamises järgnevates arendustes?", "a": "No ikkagi see ajaline ressurss ja faktor. Ja kui sa oled väikeettevõtja ja sul ei ole nagu nii suurt meeskonda taga, et siis on keeruline leida seda kohta. Et see ratas justkui peab kogu aeg töötama, sul on tunne, et ma ei saa astuda siit kõrvale, sellepärast et ma pean hoidma seda rattast töös. Et kuna see teenusedisain ikkagi nõuab natukene rohkem süvenemist, aega, võib-olla ta nõuab isegi palgatud aega, et läbi töötada ja protsessida mingid teemad. Siis jah, sul on kogu aeg, sa pead hoidma ikkagi seda rahavoogu liikumist üleval ja sul ei ole võib-olla selle jaoks liiga palju rasva siis veel kogunenud, et minna sellesse paari kuusesse tsüklisse."}, {"type": "interv", "k": "K19.2", "q": "Mis aitab sellele kaasa?", "a": "Ongi äkki, et mõni toetus teenusedisaineri või spetsialisti kaasamisena. Et mitte ei olegi nagu rahaline toetus riigi poolt, vaid on nagu spetsialisti kaasamise toetus."}]}]};
+const INTERVIEW_B = {"id": "ai_P10", "label": "P10", "blocks": [{"nr": 1, "title": "SISSEJUHATUS JA TAUST", "tpb": null, "qa": [{"type": "k", "k": "K1", "q": "Kirjelda palun oma ettevõtet – millega see tegeleb ning milline on sinu enda roll ettevõttes.", "a": "Me teeme B2B tarkvara teenusettevõtetele, et tööde planeerimine ja kliendisuhtlus oleks vähem käsitöine ja selgem. Mina olen tootejuht ning koondan sisendi müügist, toest ja klientidelt, et otsustada, mida me päriselt ehitame."}, {"type": "k", "k": "K2", "q": "Millised on teie peamised kliendid ja kuidas sa nendega kokku puutud.", "a": "Meie peamised kliendid on väiksed teenusettevõtted Eestis ja lähiturgudel, kellel on palju jooksvaid töid, kliendisuhtlust ja liiga palju käsitööd Exceli, telefoni ja eri kanalite vahel. Tavaliselt suhtlen ma nende ettevõtete juhi, tööde koordinaatori või kontoripoole inimesega, vahel ka lõppkasutajatega, kes seda süsteemi iga päev kasutavad. Minuni jõuab kliendi hääl nii müügikõnede, juurutuse ja kasutajatoe kaudu kui ka otse, kui ma võtan aega, et vaadata kasutusmustreid või teha mõne kliendiga eraldi kõne. Mulle on oluline mitte ainult see, mida klient küsib, vaid kus ta päriselt takerdub, sest need kaks asja ei kattu alati."}, {"type": "k", "k": "K3", "q": "Kirjelda oma rolli ettevõtte toote või teenuse arendustööde tegemisel ja otsuste tegemisel.", "a": "Minu roll on sisuliselt see, et ma hoian kokku eri suunast tuleva jutu ja proovin aru saada, mis on päris probleem ja mis on lihtsalt valjult esitatud soov. Müük tuleb oma lubadustega, tugi näeb igapäevast frustratsiooni ja arendus ütleb üsna kiiresti ära, kus asi läheb keeruliseks või hakkab vana osa lõhkuma, nii et mina olen seal vahel tõlkija ja otsustaja korraga. Päris üksi ma neid otsuseid ei tee, sest kui muudatus mõjutab suuremat tootesuunda või eeldab arenduselt palju aega, siis ma pean tegevjuhi ja tehnilise juhiga samale arusaamale jõudma. Aga see, mis lauale üldse jõuab, kuidas see sõnastatakse ja mis järjekorras me seda vaatame, see on suuresti minu käes.\n\nÜks hea näide oli siis, kui mitu klienti ütlesid, et tööde ümbertõstmine päeva jooksul on meie süsteemis kohmakas ja selle pärast jäävad nad ikka telefoni ja paberimärkmete peale. Esimene reaktsioon müügis oli, et teeme kohe lohistamise, värvid, vaated, noh, terve suure asja. Mina võtsin selle väiksemaks: käisin kolme kliendiga kõnes läbi, vaatasin salvestustest, kus nad kinni jäävad, ja tuli välja, et põhiprobleem polnud visuaal, vaid see, et muudatuse järel ei läinud kliendile teavitus õigel kujul ning töötajal endal kadus järjekord käest ära. Siis me ei hakanud kohe suurt lahendust ehitama, vaid tegime esmalt lihtsama muutmise voolu ja selgema kinnituse, mis juhtub pärast salvestamist. See andis päris kiiresti efekti, tugipäringud kukkusid ja alles siis läksime järgmise sammu juurde. Selliseid otsuseid ma teen kogu aeg: enne püüan ebamäärase valu konkreetseks saada ja alles siis otsustan, kas see läheb backlog’i etteotsa või peab ootama."}]}, {"nr": 2, "title": "PRAEGUNE ARENDUSPRAKTIKA", "tpb": "TPB: Behaviour (tegelik käitumine)", "qa": [{"type": "k", "k": "K4", "q": "Mõtle oma ettevõtte tavapärase toote/teenuse arendusele ja kirjelda palun, kuidas see protsess kujuneb algusest lõpuni.", "a": "Meil ei tule arendus tavaliselt kuskilt ühest ilusast strateegiadokumendist, vaid pigem kolmest-neljast kohast korraga. Midagi tuleb müügist, sest mõni potentsiaalne klient küsib väga konkreetselt mingit võimekust, midagi tuleb toest, kus sama mure kordub nädalast nädalasse, ja midagi tuleb kasutusmustritest, kus me näeme, et inimesed jäävad mingis sammus toppama või teevad ühte asja kuidagi ringiga. Minu töö algabki tavaliselt sealt, et ma proovin selle müra seest aru saada, kas tegemist on üksiku erandiga või päris mustriga. See on oluline vahe, sest väikese tiimiga on väga lihtne hakata ehitama asja, mis lahendab ühe suure häälega kliendi muret, aga lõhub ülejäänud toote loogikat.\n\nKui teema tundub päris, siis ma lähen võimalikult kiiresti kliendi tööellu sisse. Ehk teen kõnesid, vaatan vahel ekraani jagamise pealt, kuidas nad täna seda asja teevad, küsin mitte ainult mida nad tahavad, vaid kus nad eksivad, mida nad topelt sisestavad ja kus info kaob ära. Päris tihti selgub, et algne soovitud funktsioon ei olegi see õige asi. Näiteks ühel juhul küsiti meilt “paindlikumat staatuste süsteemi”, aga kui me sügavamale läksime, siis probleem oli hoopis see, et tööde üleandmisel meeskonna sees polnud selget vastutuse hetke ja inimesed kompenseerisid seda oma märkmete ja telefonikõnedega.\n\nSealt edasi ma panen probleemi võimalikult lihtsasse keelde. Mitte “teeme uue mooduli”, vaid näiteks “objektijuht peab nägema ühe pilguga, mis tööd on kinni ja kelle taga”. Siis arutame arendusega, mis on kõige väiksem asi, millega seda oletust kontrollida. Mõnikord piisab klikatavast vaatest või isegi maketist, mõnikord teeme väikse päris lahenduse piiratud ulatuses. Tehniline juht vaatab kohe otsa, kas see istub olemasoleva arhitektuuri peale või tekitab jälle mingi sabas lohiseva hooldusmure, sest tehniline võlg on meil täiesti päris asi, mitte teooria.\n\nKui oleme suuna enam-vähem paika saanud, siis tuleb see ebamugav osa, kus prioriseerime. Seal on ausalt kõige rohkem pinget, sest kõigil on oma põhjendus olemas. Müük tahab midagi, mis aitaks tehingu lukku saada, tugi tahab vähendada korduvaid pöördumisi, mina vaatan, kas see parandab toote tervikut, ja juhtkond küsib, kas see aitab järgmise kvartali eesmärkidele kaasa. Tavaliselt lepime kokku, mis läheb nüüd, mis läheb hiljem ja mis jääb üldse tegemata, kuigi noh, vahel see “hiljem” tähendab tegelikult “kui keegi seda kolme kuu pärast veel mäletab”.\n\nArendusse minnes püüame hoida asja piisavalt väikese, et saaks kiiresti kasutusse. Ma kirjutan nõudeid pigem töövoo ja otsustuskohtade kaudu, mitte pika funktsiooniloeteluna, sest muidu ehitame lihtsalt nuppe juurde. Arenduse ajal tulevad alati mingid täpsustused, sest paberil loogiline asi käitub päriselus teisiti. Enne väljalaset vaatame üle, kuidas see kliendile seletatav on, kas tugi oskab seda toetada ja kas juurutuses peab midagi muutma. See on koht, mida sageli alahinnatakse: kui lahendus on tootes olemas, aga inimesed ei saa aru, millal või miks seda kasutada, siis sisuliselt on pool tööd tegemata.\n\nPärast live’i ma ei loe asja lõpetatuks. Ma vaatan, kas kasutus päriselt läks käima, kas vead vähenesid, kas tugi sai vähem sama teemaga pöördumisi ja kas klient ütleb kahe nädala pärast, et elu läks lihtsamaks või lihtsalt tekkis uus nupp juurde. Mõnikord peame tunnistama, et saime probleemi kirjeldusest õigesti aru, aga lahendus sai liiga keeruline. Ja vahel vastupidi, teeme üsna väikse muudatuse ning see võtab inimestelt ühe igapäevase käsitöö sammu ära, mis ongi tegelikult see koht, kus ma tunnen, et asi töötas. Nii et protsess on meil olemas küll, aga ta ei ole steriilne; pigem selline pidev tasakaal selguse, surve ja piiratud aja vahel."}, {"type": "k", "k": "K5", "q": "Kuidas te püüate aru saada, mida kliendid või kasutajad tegelikult vajavad?", "a": "Me püüame seda mitmest kohast korraga kokku panna, sest ainult kliendi sõna-sõnalise soovi järgi ehitades läheb päris kiiresti metsa. Ma käin ise klientidega kõnedes, vaatan koos toega, kus kasutajad kinni jäävad, ja võimalusel jälgin ka kasutusmustreid, et näha, kas probleem on korduv või lihtsalt ühe valju kliendi teema. Üsna tihti küsin ka üle, mis töö nad enne tegid, mis samm seal täna kõige rohkem aega või vigu tekitab, sest inimesed ütlevad lahenduse ära, aga vajadus on seal all kuskil mujal. Ja enne suuremat arendust proovime asja läbi kas maketi, väikse protsessimuudatuse või käsitsi tehtud ajutise variandiga, et mitte ehitada kallilt midagi, mida tegelikult vaja ei ole."}, {"type": "k", "k": "K6", "q": "Kirjelda ühte hiljutist arendamise teekonda algusest kuni arenduse lõpuni.", "a": "Üks üsna hiljutine teekond oli meil töö ümberplaneerimise vaate parandamine, sest tugi nägi korduvalt, et kasutajad ajavad töid käsitsi ümber tõstes asju sassi, ja müük surus ka, et see jääb demodes nõrgaks. Algus ei olnud tegelikult “teeme uus vaade”, vaid ma võtsin kliendikõnesid, vaatasin logidest kohti, kus inimesed pooleli jätavad, ja joonistasin arendusega kõigepealt hästi lihtsa lahenduse läbi, et saada selgeks, kas probleem on nähtavuses või tegevuste järjekorras. Siis tõmbasime scope’i väiksemaks, sest muidu oleks see läinud juba poole toote ümbertegemiseks, ja otsustasime teha esmalt mõned konkreetsed muudatused: selgemad staatuste vahetused, vähem eksimisvõimalusi ja paremad hoiatused. Arendus ise läks kahe sprindi peale, sinna otsa testisime mõne olemasoleva kliendiga, parandasime paar loogikaviga ja alles siis rullisime laiemalt välja. Lõpus minu jaoks oluline osa ei olnud ainult release, vaid see, et tugi oskaks seda kasutusse aidata ja et me näeks päriselt, kas käsitöö vähenes."}]}, {"nr": 3, "title": "KLIENDI JA KASUTAJA ROLL ARENDUSES", "tpb": "TPB: Behaviour + Attitude", "qa": [{"type": "k", "k": "K7", "q": "Kuidas teie arendusmeeskond puutub kokku klientidega?", "a": "Meil arendus ei istu täiesti kliendist eraldi, aga ta ei ole ka nii, et iga arendaja käib iga nädal klientidega kõnes. Enamasti käib kontakt läbi mitme kihi: tugi toob välja korduvad mured, mina ja vahel ka müük räägime klientidega otse, ja siis me viime selle arendusse juba natuke puhastatud kujul, et fookus ei läheks üksikute emotsionaalsete soovide peale laiali. Samas kui teema on suurem või segasem, siis ma püüan vähemalt ühe arendaja kliendikõnesse või kasutust vaatama kaasa võtta, sest muidu jääb see liiga teoreetiliseks.\n\nÜks hea näide oli meil see tööde ümberplaneerimise vaade, millest ma enne rääkisin. Alguses tuli see meile toe kaudu, et inimesed ajavad kuupäevi ja ressursse sassi, aga arenduse jaoks oli see alguses lihtsalt järjekordne “tehke drag-and-drop paremaks” tüüpi soov. Siis võtsime kaks klienti, istusime nendega kõnes ja lasime neil päris tööpäeva olukorda näidata, mitte ainult rääkida. Sealt tuli välja, et probleem polnud ainult liigutamises, vaid selles, et inimene ei saanud ühe pilguga aru, mis muutus ja mis mõju see järgmistele töödele avaldab. Pärast seda oli arendajatel hoopis teine arusaam; nad ei ehitanud lihtsalt uut liigutamise mehhanismi, vaid lisasid nähtavust ja kinnitusi õigesse kohta.\n\nNoh, reaalsus on see, et kõik kliendikontakt ei jõua arenduseni puhtal kujul. Vahel olen mina see filter, vahel tugi, ja vahel see on ohtlik, sest mingi nüanss võib kaduma minna. Sellepärast me proovime kriitilisemate teemade puhul mitte piirduda Jira piletiga, vaid näidata kas kõnesalvestust, ekraanitõmmist või võtta arendaja otse kuulama. Siis on vähem seda, et ehitame korrektse asja, mis päris elus ikkagi mööda läheb."}, {"type": "k", "k": "K9", "q": "Kirjelda kliendilt tagasiside kogumise protsessi.", "a": "Meil ei käi see nii, et saadame korra kvartalis ühe küsitluse välja ja siis teeme järeldused ära. Pigem koguneb tagasiside jooksvalt mitmest kohast: tugi paneb kirja korduvad mured, müük toob ette lubaduste ja vastuväidete koha pealt oma pildi, mina käin klientidega kõnedes ja vaatan aeg-ajalt ka kasutusmustreid, et näha, kus inimesed päriselt toppama jäävad. Siis ma püüan selle müra seest eristada, kas tegu on üksiku erisoovi, halva kasutuskoha või laiema mustriga. Kui asi tundub oluline, proovime enne suuremat arendust kas maketi, lihtsama lahenduse või mõne kliendiga läbi arutamisega aru saada, kas me lahendame õiget probleemi."}, {"type": "interv", "k": "K9.1", "q": "Kuidas see sinuni jõuab?", "a": "See jõuab minuni põhimõtteliselt kolme kanali kaudu, mis kogu aeg paralleelselt töötavad. Kõige rohkem tuleb tugevalt läbi toe, sest nemad näevad kõige ausamalt, kus inimene päriselt kinni jääb ja mida ta üritas teha enne, kui asi katki läks või segaseks läks. Teine suur sisend tuleb müügist ja juurutusest, kus tuleb välja, mida kliendid enne ostu ootavad või mis neil protsessi tasandil puudu on. Ja siis osa tuleb otse minule klientide kõnedest, kasutusmustritest ja vahel ka sellest, kui ma vaatan lihtsalt peale, kuidas keegi süsteemis liigub — no õigemini kus ta takerdub, mitte mida ta hiljem tagantjärele ütleb."}, {"type": "interv", "k": "K9.2", "q": "Kuidas te tagasisidet rakendate?", "a": "Ma püüan tagasisidet kõigepealt lahti võtta selleks, et aru saada, kas tegu on üksiku sooviga, korduva mustriga või mingi sügavama protsessiveaga. Kui näen, et sama asi tuleb toe kaudu, kasutusandmetest ja kliendikõnedest korraga üles, siis see liigub juba tõsisemalt prioriteetide lauale, mitte ei jää lihtsalt backlog’i märkuseks. Enne kui suure arenduse käima lükkame, proovime võimalusel lahenduse loogika läbi kas maketi, väikse tehnilise katse või lihtsalt väga konkreetse töövoo kirjeldusega, et mitte ehitada valet asja kiiresti valmis. Ja siis, noh, kui asi läheb arendusse, siis me vaatame pärast ka üle, kas see tegelikult vähendas segadust või ainult tekitas uue nupu juurde."}, {"type": "interv", "k": "K9.täpsustav", "q": "Miks sa pead oluliseks tagasisidet just nii mitmest allikast kokku panna?", "a": "Sellepärast, et iga allikas näeb eri kihti samast probleemist. Klient ütleb tihti, mida ta tahab, aga mitte alati seda, mis teda päriselt takistab; tugi näeb, kus ta igapäevaselt kinni jääb, ja müük toob välja, mille taha tehingud jäävad või mida turul oodatakse. Kui ma vaataks ainult ühte kanalit, siis ma ehitaks kas kõige valjema soovi peale või lahendaks ainult sümptomit. Mitmest kohast kokku pannes tekib mul parem pilt, kas tegu on päris mustri, üksiku erandi või lihtsalt halvasti sõnastatud vajadusega. B2B tootes on see eriti oluline, sest üks vale eeldus võib tähendada päris palju arendusaega vales kohas."}, {"type": "k", "k": "K10", "q": "Too palun üks konkreetne näide olukorrast, kus kliendi sisend muutis teie algset plaani, prioriteeti või lahendust. Kirjelda seda olukorda.", "a": "Üks päris selge näide oli tööde ümberplaneerimise vaatega. Meie algne plaan oli teha sinna pigem kiiruse peale minev täiendus, et saaks hulgi tegevusi lihtsamini ringi tõsta, sest müük nägi, et see kõlab demos hästi ja mitu klienti küsis ka “lihtsalt kiiremat ümbertõstmist”. Siis ma istusin ühe kliendiga kõnes ja vaatasin, kuidas nende koordinaator päriselt päeva jooksul töid ümber tõstab, ja sealt tuli välja, et põhimure ei olnud üldse klikkide arv, vaid see, et inimesed tegid valesid liigutusi ega saanud õigel hetkel aru, et tehnik on juba hõivatud või kliendile oli teine aeg lubatud. Selle peale muutsime prioriteeti: enne ei teinud me hulgi-editit, vaid tõime ette konfliktide hoiatuse, selgema ajajoone ja mõned piirangud, mis aitasid vähem vigu teha. Müügi jaoks oli see võib-olla vähem efektne lugu, aga kasutuses andis rohkem väärtust."}]}, {"nr": 4, "title": "SUHTUMINE TEENUSEDISAINI / KASUTAJAKESKSUSESSE", "tpb": "TPB: Attitude + Behavioural Beliefs", "qa": [{"type": "k", "k": "K11", "q": "Millist väärtust sa näed kasutajakeskses lähenemises? Põhjenda oma arvamust.", "a": "Ma näen selle põhilist väärtust selles, et see aitab meil vahet teha, kas me lahendame päris tööelu probleemi või lihtsalt reageerime kõige kõvemini kõlanud soovile. Meie kontekstis on see hästi oluline, sest B2B tarkvaras tuleb igast suunast survet: müük tahab tehingu kätte saada, tugi tahab korduvad valukohad ära lahendada, klient tahab oma muret kohe, ja arendus tahab hoida süsteemi terviklikuna. Kui sa sinna vahele kasutaja päris tööd ei too, siis hakkadki ehitama funktsioone, mis kõlavad koosolekul hästi, aga ei tee inimese päeva tegelikult lihtsamaks.\n\nMinu jaoks ei tähenda kasutajakesksus seda, et kasutaja ütleb ja meie kirjutame backlog’isse. Pigem tähendab see, et ma püüan aru saada, mis hetkel tal töövoog katki läheb, kus ta peab käsitsi parandama, kus tekib eksimisrisk ja kus ta teeb tegelikult süsteemi asemel oma peas tööd ära. Kui me selle kätte saame, siis on otsused palju selgemad. Vahel tuleb välja, et inimene küsib uut nuppu, aga tegelik vajadus on hoopis parem järjekord, selgem vaade või vähem samme.\n\nÜks hea näide oli see tööde ümberplaneerimise teema, millest ma enne rääkisin. Alguses tundus, et vaja on lihtsalt kiiremat hulgi muutmist, sest see kõlas müügis hästi ja ausalt, demo mõttes ka. Aga kui me vaatasime reaalseid kasutusolukordi ja kuulasime toe kõnesid, siis selgus, et põhiprobleem ei olnud ainult kiirus, vaid see, et inimesed ei saanud piisavalt selgelt aru, mis muutub ja mis mõju sellel edasi on. Ehk nad tegid vale liigutuse, ajasid tööd sassi ja pärast parandasid käsitsi. Kui me oleksime ainult algset soovi täitnud, oleksime saanud võib-olla efektsema funktsiooni, aga sama segaduse kiiremini tehtud.\n\nTeine väärtus on see, et kasutajakeskne lähenemine aitab mul ettevõtte sees tõlkida eri inimeste jutu samasse keelde. Müük räägib võimalusest, tugi räägib probleemist, arendus räägib keerukusest, klient räägib frustratsioonist. Kui ma saan selle siduda konkreetse kasutusmustriga, siis vaidlus muutub vähem emotsionaalseks ja rohkem sisuliseks. Noh, mitte alati, vahel jääb ikkagi kõige valjema hääle mõju, aga vähemalt meil on mingi ühine alus, millele tagasi tulla.\n\nJa võib-olla kõige praktilisem väärtus on lihtsalt raiskamise vähendamine. Meil ei ole nii palju arendusressurssi, et teha suuri asju puhta oletuse pealt. Sellepärast ma eelistan enne suure töö alustamist midagi läbi proovida, kasvõi klikitava prototüübi, paari kliendikõne või kasutuslogide vaatamisega. See ei tee protsessi täiuslikuks, vahel see isegi aeglustab algust, aga pikas plaanis hoiab ära päris kalli vale töö. Meie jaoks on hea kasutajakesksus lõpuks see, kui tarkvara teeb inimese tööpäeva selgemaks ja vähendab käsitööd, mitte see, et me ise tunneme, et tegime väga moodsat tootearendust."}, {"type": "interv", "k": "K11.täpsustav", "q": "Miks on teie jaoks eriti oluline eristada päris probleemi kõige valjemast soovist?", "a": "Sellepärast, et kõige valjem soov on tihti juba kellegi pakutud lahendus, mitte probleem ise. Kui ma selle otse backlog’i tõstan, siis on päris suur oht, et me ehitame ühe kliendi erandi valmis, aga laiem kasutajate hulk ei saa sellest suurt midagi või läheb asi hoopis keerulisemaks. Meie B2B tarkvaras on see eriti tundlik, sest kasutajad tahavad eelkõige, et tööpäev oleks selgem ja vigu tekiks vähem, mitte tingimata uut nuppu või vaadet lihtsalt sellepärast, et keegi seda kõvasti küsis. Noh, minu jaoks on oluline hoida vahet sellel, mis aitab süsteemi tervikut, ja sellel, mis lihtsalt kustutab ühe hetke pinge ära."}, {"type": "k", "k": "K12", "q": "Millised on sinu meelest kasutajakeskse lähenemise kitsaskohad või piirangud?", "a": "Minu jaoks on peamine piirang see, et kasutajakesksus ei anna automaatselt õiget vastust, ta annab lihtsalt rohkem päris maailma müra lauale. Kasutajad oskavad väga hästi kirjeldada oma tänast valu, aga palju kehvemini seda, milline lahendus töötaks laiemalt ka teiste jaoks ja jääks tootes hooldatavaks. B2B tarkvaras on see eriti tavaline, et üks tugev klient tahab sisuliselt oma protsessi tootesse sisse valada, ja kui sa seda liiga otse kuulad, siis hakkadki ehitama erandite kogu, mitte toodet. Teine piirang on aeg: kui müük on midagi poolenisti ära lubanud ja kliendil on reaalne probleem käes, siis sul ei ole alati luksust teha pikka uurimist, isegi kui ma tahaks enne rohkem läbi proovida.\n\nÜks konkreetne näide oli meil kliendisuhtluse poolel, kus üks suurem klient surus, et iga töö juurde on vaja sisuliselt eraldi vestlusvaadet, koos märkuste ja failidega, noh peaaegu nagu väike chat. Kui ainult nende juttu kuulata, siis tundus see väga loogiline ja müük oli juba üsna elevil, et sellest saab hea demoasi. Aga kui ma vaatasin toe pileteid ja istusin paari kasutajaga kõnes, siis tuli välja, et nende päris probleem polnud “chat’i puudumine”, vaid see, et nad ei saanud aru, kes kliendile viimati vastas, mis kokku lepiti ja kas tööseis muutus ilma teisi teavitamata. Kui me oleks läinud täis suhtlusmooduli ehitamisse, oleks see olnud meile päris kallis arendus, tehniliselt ebamugav ja ausalt öeldes enamikule klientidest üleliigne. Lõpuks tegime kitsama lahenduse: selgema tegevusajaloo, vastutaja nähtavuse ja mõned automaatsed teavitused, ja see lahendas suure osa jamast ära. Ehk siis kasutajakesksuse piirang ongi minu meelest see, et kui sa ei tõlgi kasutaja juttu probleemiks, vaid võtad seda tellimusena, siis sa võid väga kasutajakeskselt täiesti valesse kohta joosta."}]}, {"nr": 5, "title": "SOTSIAALSED JA PROFESSIONAALSED MÕJUTAJAD", "tpb": "TPB: Subjective Norm", "qa": [{"type": "k", "k": "K13", "q": "Kuidas sinu meeskond/kolleegid suhtuvad kasutajakesksesse lähenemisse ja miks?", "a": "Pigem toetavalt, aga erineva kannatusega. Tugi ja müük toovad kliendi valu loomulikult lauale, arendus tahab näha konkreetset mustrit ja mõju, sest ressurssi on vähe ja iga soov ei saa kohe prioriteediks."}, {"type": "k", "k": "K14", "q": "Kuidas juhtkond suhtub klientide kaasamisse arendusotsuste tegemisel? Miks?", "a": "Juhtkond suhtub sellesse pigem positiivselt, aga mitte romantiliselt. Meil ei ole hoiakut, et klient tuleb lihtsalt tuppa lasta ja siis tema ütleb, mida ehitame; pigem nähakse kliendi kaasamist viisina vähendada vales suunas arendamise riski. Tegevjuhi poolt vaadates on seal väga praktiline põhjus ka sees: kui müük juba lubab turule midagi, siis on parem enne kontrollida, kas see probleem on päriselt laiem ja kuidas inimesed täna seda lahendavad. Samas, noh, piir on ka olemas — juhtkond ei taha, et üks suur klient hakkaks toodet enda järgi painutama, sest siis laguneb tervik päris kiiresti ära."}, {"type": "k", "k": "K15", "q": "Kuidas on sinu suhtumist või praktikaid mõjutanud laiem ettevõtluskeskkond, näiteks kiirendid, mentorid, sarnased ettevõtted või konkurendid? Miks?", "a": "See on mõjutanud päris palju, eriti just selles mõttes, et ma olen ajas muutunud ettevaatlikumaks “teeme selle ka kiiresti ära” tüüpi mõtlemise suhtes. Varasemas faasis vaatasime üsna palju, mida teised sarnased SaaS-id näitavad, ja tekkis kiusatus joosta kaasa, sest konkurendi demo näeb kena välja ja müük küsib kohe, miks meil seda pole. Aga mida rohkem ma olen rääkinud teiste tooteinimestega ja mõne mentoriga, seda rohkem on kinnistunud, et B2B-s ei võida sind see, kellel on kõige rohkem klotse ekraanil, vaid see, kelle asi päriselt vähendab kliendi igapäevast segadust.\n\nÜks päris konkreetne näide oli meil raportite poolel. Müük surus, et konkurendil on “paindlikum” vaade ja paar potentsiaalset klienti küsisid sama, nii et esimene reaktsioon oli ehitada suur kohandatav raportimootor. Siis ma rääkisin ühe teise tarkvarafirma tootega tegeleva inimesega, kes ütles üsna kainelt, et enne tuleb vaadata, kas kliendid tahavad päriselt paindlikkust või lihtsalt kolme vastust kiiremini kätte saada. Me tõmbasime hoo maha, tegime rea klientkõnesid ja vaatasime toe pileteid otsa, ja välja tuli, et enamik ei tahtnud üldse ehitajat, vaid kahte väga konkreetset koondvaadet, mida saaks hommikul ilma eksportimata vaadata. Selle pealt mu praktika muutus küll: ma surun nüüd palju rohkem seda, et enne suuremat arendust sõnastame probleemi eraldi ja proovime väiksema lahenduse läbi. Laiem ettevõtluskeskkond on mulle vist peamiselt õpetanud distsipliini, mitte niivõrd uusi loosungeid. Ja noh, konkurente vaatan ma siiani, aga pigem selleks, et näha, kuhu turg liigub, mitte selleks, et backlog’i kopeerida."}, {"type": "k", "k": "K16", "q": "Kas sul on olnud formaalne kokkupuude teenusedisaini metoodikaga, koolitused, programmid, meistriklassid vms?", "a": "Jah, mingil määral on. Mul ei ole sellist tausta, et oleksin läbinud ühe pika “teenusedisaini programmi” ja nüüd end selle sildi alt määratleks, aga ma olen käinud tootejuhtimise, kasutajakogemuse ja teenusearenduse koolitustel ning paaris töötoas, kus needsamad võtted olid sees. Sealt on mulle kõige rohkem külge jäänud mitte terminid, vaid see harjumus enne suuremat arendust probleem lahti võtta, kasutaja teekond läbi vaadata ja mingi lahendus odavalt läbi proovida. Ehk formaalne kokkupuude on olnud küll, aga ma ise tõlgin selle meil pigem lihtsaks töökeeleks, et meeskond saaks aru, mida ja miks me teeme."}, {"type": "interv", "k": "K16.1", "q": "K16.1 Kuidas see on sinu praktikat mõjutanud?", "a": "See on mõjutanud mind peamiselt nii, et ma ei taha enam suuremat arendust käivitada ainult selle pealt, et kellelgi on tugev tunne või vali soov. Ma püüan enne kas või väikse ringiga läbi kontrollida, kus kasutaja päriselt kinni jääb, mis osa on protsessiprobleem ja mis osa on lihtsalt halb ekraan või segane sõnastus. Koolitustest tuli mulle kasuks just see, et sain mõned lihtsad töövõtted ja ühise keele, aga meeskonnas ma neid väga teoreetiliselt ei presenteeri. Pigem tõlgin selle nii, et teeme enne väikse proovi, näitame kellelegi ette, kuulame toe mustrid ära ja alles siis paneme suurema töö lukku."}, {"type": "interv", "k": "K16.täpsustav", "q": "Mis pani sind just probleemide lahtivõtmise harjumust kõige rohkem väärtustama?", "a": "Peamiselt see, et ma olen mitu korda näinud, kuidas otse välja öeldud soovile ehitamine viib vale lahenduseni. Kui probleemi enne lahti ei võta, siis me kulutame arendust ja klient on lõpuks ikka poolrahulolematu."}]}, {"nr": 6, "title": "VÕIMEKUS JA BARJÄÄRID", "tpb": "TPB: Perceived Behavioural Control", "qa": [{"type": "k", "k": "K17", "q": "Kirjelda ühte olukorda, kus oleksid tahtnud klienti rohkem kaasata, aga see ei õnnestunud. Mis sai takistuseks ja miks?", "a": "Üks selline olukord oli meil siis, kui tegime tööde staatuse ja klienditeavituste loogika ümber, sest üks suurem potentsiaalne klient surus päris tugevalt, et nende jaoks on oluline, et lõppklient saaks õigel ajal sõnumi, kui aeg muutub või töö edasi lükkub. Müük oli selle teema juba üsna kuumaks kütnud ja sisuliselt oli ootus, et me liigume kiiresti, aga mina oleks tahtnud enne päris kasutajatega rohkem rääkida, mitte ainult selle kliendi juhi või ostupoole inimesega. Ma tahtsin näha, kuidas nende koordinaatorid päriselt päeva juhivad, millal nad staatuseid muudavad, mis hetkel nad üldse julgevad kliendile lubadust välja saata ja kus eksimused tekivad. Seda ligipääsu me ei saanudki, sest kliendi poolel oli kontaktisik pigem otsustaja kui igapäevane kasutaja, ja tema filtreeris info enda kaudu edasi. Lisaks oli neil hooaja kõige kiirem aeg, nii et kedagi tunniks-kahte kõnesse või varjutamisse saada oli sisuliselt võimatu. Meie enda poolel surus ka aeg peale, sest sprint oli juba planeeritud ja arendus ei saanud jääda määramata ajaks ootama. Nii me tegime lõpuks otsuse toe piletite, kahe lühikese juhtkõne ja enda oletuste pealt, no ja lahendus sai küll välja, aga hiljem tuli välja, et põhiprobleem polnud mitte teavituse saatmine ise, vaid see, et inimesed ei usaldanud süsteemi staatust piisavalt, et neid teavitusi õigel hetkel välja lasta. Ehk me ehitasime osa õigest asjast, aga mitte päris probleemi tuuma. Takistus oligi kombinatsioon kliendipoolsest väravavalvurist, ajasurvest ja sellest, et müügivajadus lükkas otsuse kiiremini ära, kui mina oleks tahtnud. Pärast seda ma olen püüdnud palju selgemalt välja öelda, millal meil on päris kasutajasisend olemas ja millal me tegelikult kompame üsna piiratud info pealt."}]}, {"nr": 7, "title": "TULEVIKUVAADE JA KAVATSUSED", "tpb": "TPB: Intention", "qa": [{"type": "k", "k": "K18", "q": "Kuidas soovid muuta tänast protsessi kliendi kaasamise vaates järgmistes arendustöödes?", "a": "Ma tahaks järgmistes arendustes teha kliendi kaasamise natuke varasemaks ja väiksemateks tükkideks, mitte nii, et kuulame alguses mure ära ja siis tuleme üsna valmis lahendusega tagasi. Ehk enne suuremat arendust tahaks mul olla selgem harjumus näidata kas klikatavat visandit, lihtsat töövoogu või kasvõi pooleliolevat loogikat 3–5 eri tüüpi kliendile, et näha, kas probleem on üldse õigesti raamitud. Teine asi on see, et ma ei tahaks lasta ühel suurel kliendil liiga palju pilti ära määrata, vaid võrrelda tema soovi teiste kasutusmustritega. Ja ausalt, ma tahaks arenduse ka natuke varem sellesse kuulamisse tuua, sest siis jääb vähem tõlkevigu minu ja päris kasutaja vahele."}, {"type": "interv", "k": "K18.1", "q": "Milliseid konkreetseid tegevusi oled juba alustanud või planeerinud?", "a": "Ma olen juba hakanud süstemaatilisemalt enne suuremat arendust lühikesi kliendikõnesid ja kiireid lahenduse läbikäike tegema. Planeerin ka seda, et tugi, müük ja arendus vaataksid kord kuus koos läbi korduvad mustrid, mitte ainult üksikud valjud soovid."}, {"type": "interv", "k": "K18.täpsustav", "q": "Mis pani sind tundma, et seni tuli lahendus kliendi jaoks liiga valmis kujul?", "a": "Seda tunnet tekitas paar olukorda, kus klient ütles alles demo või peaaegu valmis lahenduse peal, et jah, ilus küll, aga päris nende töövoog käib teistmoodi. Ehk me olime nende probleemi liiga vara enda peas ära tõlkinud."}, {"type": "k", "k": "K19", "q": "Milliseid takistusi näed kliendi kaasamises järgnevates arendustes?", "a": "Peamine takistus on ajastus, sest kliendid ütlevad üldiselt, et tahavad kaasa mõelda, aga päris tööpäeva sees on neil selle jaoks vähe ruumi. Kui me saame inimese kätte alles siis, kui tal on parasjagu kriis või hooajaliselt käed-jalad tööd täis, siis ta annab kas väga kiire pinnapealse vastuse või lükkab üldse edasi, ja meie arendus ei saa jääda lõputult ootama. Teine mure on see, et kaasa räägivad sageli need samad paar aktiivset klienti, kelle hääl on niigi tugev, aga vaiksem enamus kasutab toodet hoopis teistmoodi. See tähendab, et kui ma ei vaata kõrvale ka kasutusmustreid ja toe pileteid, siis ma võin ehitada väga korraliku lahenduse valele kitsale juhtumile.\n\nÜks konkreetne näide oli meil nende töö staatuste ja klienditeavituste loogikaga. Me tahtsime seal vahepeal testida paari väikest varianti enne, kui suurema arenduse sisse viime, aga see potentsiaalne klient, kelle vajadus kogu teema lauale tõi, kadus mitmeks nädalaks ära, sest neil oli endal sisemine süsteemivahetus käsil. Samal ajal müük surus, et me ei kaotaks hoogu, ja lõpuks liikusime edasi liiga suure eelduste pagasiga. Hiljem demodes tuli välja, et osa sõnastusest ja staatuste järjestus olid nende jaoks loogilised, aga teiste klientide jaoks tekitasid segadust. Ehk takistus ei ole ainult see, et klienti on raske kätte saada, vaid ka see, et ettevõtte sees on surve otsus enne ära teha, kui pilt on päriselt koos. Ja noh, sinna otsa tuleb veel tehniline võlg ka: isegi kui ma saan hea sisendi, ei pruugi meil olla võimalust teha väikest puhast katset, vaid peame siduma selle vana loogika külge, mis moonutab natuke tulemust."}, {"type": "k", "k": "K20", "q": "Suur aitäh sinu aja ja mõtete eest! Kas on midagi, mida sa tahaksid veel lisada, mis jäi käsitlemata?", "a": "Jah, võib-olla üks asi, mis mul jäi õhku, on see, et kasutajakesksus ei ole meie jaoks eraldi projekt või mingi kena kiht arenduse peal, vaid pigem distsipliin hoida end ausana. Selles mõttes ma ei mõtle sellest nii, et nüüd teeme “meetodit”, vaid et enne kui me kirjutame suurema töö backlog’isse, proovime aru saada, mis päriselt kasutaja päeva segab. Meie tüüpi B2B tootes on väga lihtne ehitada midagi, mis näeb demo peal tark välja, aga igapäevases töös ei vähenda ühtegi klikki, ei tee otsust selgemaks ega võta riski maha. Ja siis ongi tunne, et kõik nagu tegid oma töö ära, aga kliendi elu ei läinud paremaks.\n\nTeine asi on see sisemine tõlkimise töö, millest vist räägitakse liiga vähe. Müük räägib võimalusest, tugi räägib valust, arendus räägib keerukusest ja mina pean sellest kuidagi ühe arusaadava probleemi tegema. Noh, see ei ole alati eriti elegantne protsess. Vahel on isegi nii, et kõik osapooled räägivad justkui samast teemast, aga tegelikult mõtlevad eri asja. Kui seda lahti ei võta, siis otsus sünnibki pigem surve pealt kui selguse pealt.\n\nMa lisaks veel selle ka, et väikse ettevõtte puhul on protsessi küpsus hästi habras asi. Meil on eelis, et saame kiiresti reageerida, inimesi on vähe, info liigub otse. Aga sama kiiresti võib kogu plaan minna lappama, kui mõni suurem klient surub või kui müük on midagi liiga optimistlikult ette lubanud. Siis testitakse tegelikult mitte ainult toodet, vaid ka seda, kui hästi me suudame piiri hoida. Ja see on minu jaoks vist üks raskemaid kohti: millal öelda “jah, see on päris mure” ja millal öelda “jah, aga mitte praegu”.\n\nVõib-olla viimane mõte on see, et ma tahaks, et ettevõtetes räägitaks rohkem teadlikest kompromissidest. Mitte nii, et kas oleme kasutajakesksed või ärikesksed, vaid et kui me teeme kompromissi, siis me vähemalt saame aru, mille arvelt. Kui me lükkame mingi kasutaja mure edasi, siis mis risk sellega kaasneb. Kui me ehitame suure kliendi pärast erandi, siis mis see toote tervikule teeb. Minu meelest küpsus ei ole see, et sul on ideaalne protsess, vaid see, et sa näed neid valikuid läbi ega teeskle, et neid pole olemas."}]}]};
+const RATING_STATEMENTS = {"2": {"title": "Käitumine ja arenduspraktika", "items": [["2.1", "Intervjueeritav kirjeldab oma praegust arendus- või otsustusprotsessi piisavalt detailselt."], ["2.2", "Vastused sisaldavad konkreetseid näiteid, numbreid või situatsioonikirjeldusi, mitte ainult üldistusi."], ["2.3", "Intervjueeritav räägib oma isiklikust kogemusest, mitte üldistest tõdedest."]]}, "3": {"title": "Kliendi kaasamine ja tagasiside", "items": [["3.1", "Intervjueeritav toob konkreetseid näiteid olukordadest, kus kliendi sisend mõjutas otsuseid."], ["3.2", "Intervjuust selgub, kuidas tagasiside kogumine ja rakendamine praktiliselt toimub."], ["3.3", "Vastused tunduvad loomulikud ja elulähedased."]]}, "4": {"title": "Hoiakud (Attitude)", "items": [["4.1", "Intervjueeritav väljendab selgelt oma suhtumist kasutajakesksesse lähenemisse (positiivne, negatiivne või ambivalentne)."], ["4.2", "Intervjueeritav toob välja konkreetseid põhjuseid, miks ta kasutajakeskset lähenemist väärtustab või ei väärtusta."], ["4.3", "Intervjueeritav kirjeldab kasutajakeskse lähenemise tajutud kasu või kahju oma ettevõtte kontekstis."]]}, "5": {"title": "Subjektiivsed normid (Subjective Norm)", "items": [["5.1", "Intervjuust selgub, kuidas meeskond, kolleegid või juhtkond suhtuvad kasutajakesksesse lähenemisse."], ["5.2", "Intervjueeritav kirjeldab väliseid mõjutajaid (konkurendid, mentorid, koolitused, valdkond), mis on tema praktikaid kujundanud."], ["5.3", "Intervjuust tuleb välja, kas klientide kaasamine toimub sisemisest soovist või välisest survest."]]}, "6": {"title": "Tajutud käitumiskontroll (Perceived Behavioural Control)", "items": [["6.1", "Intervjueeritav nimetab konkreetseid takistusi, mis piiravad kasutajakeskse lähenemise rakendamist (aeg, raha, oskused, struktuur vms)."], ["6.2", "Intervjueeritav kirjeldab tegureid, mis soodustavad või toetavad kasutajakeskset lähenemist tema ettevõttes."], ["6.3", "Intervjueeritav annab hinnangu oma võimekusele kasutajakeskseid praktikaid rakendada."]]}, "7": {"title": "Kavatsus ja tulevikuvaade (Intention)", "items": [["7.1", "Intervjueeritav väljendab kavatsusi tuleviku osas – kas ja kuidas ta soovib oma praktikat muuta."]]}, "8": {"title": "Vastuste loomulikkus ja kvaliteet", "items": [["8.1", "Intervjueeritav kasutab keelt, mis sobib tema rolli ja valdkonnaga (sh slängi, valdkonnakeelt, kõnekeelt)."], ["8.2", "Intervjueeritava vastused on omavahel kooskõlas – varasemad vastused ei ole vastuolus hilisematega."], ["8.3", "Intervjuus esineb ootamatuid vaatenurki või teemasid, mida intervjueerija otseselt ei küsinud."], ["8.4", "Vastaja kõnes ilmneb seisukohtade ebakindlus, kõikumine või sisemine pinge."]]}, "9": {"title": "Koondhinne", "items": [["9.1", "Kokkuvõttes annab see intervjuu väärtuslikku sisendit kasutajakesksete praktikate uurimiseks."], ["9.2", "See intervjuu tundub nagu vestlus päris inimesega."]]}};
+const PAIR_NR = 10;
+
+// Randomize order
+const orderFlip = Math.random() < 0.5;
+const INTERVIEWS = orderFlip ? [INTERVIEW_B, INTERVIEW_A] : [INTERVIEW_A, INTERVIEW_B];
+const ORDER_LABEL = orderFlip ? "B_first" : "A_first";
+
+const state = {
+    step: "intro",
+    consent: null,
+    ratings: {},
+    feedback: {},
+    startTime: Date.now(),
+    order: ORDER_LABEL,
+    pair: PAIR_NR
+};
+
+function el(tag, attrs = {}, ...children) {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+        if (k === "class") e.className = v;
+        else if (k === "html") e.innerHTML = v;
+        else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+    }
+    for (const c of children) {
+        if (typeof c === "string") e.appendChild(document.createTextNode(c));
+        else if (c) e.appendChild(c);
+    }
+    return e;
+}
+
+function clearContent() { document.getElementById("content").innerHTML = ""; }
+
+function renderProgress(text, percent) {
+    const c = document.getElementById("progress-container");
+    c.innerHTML = `<div class="progress">${text}<div class="progress-bar"><div class="progress-bar-fill" style="width:${percent}%"></div></div></div>`;
+}
+
+function escapeHtml(s) {
+    if (s == null) return "";
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+// === Step 1: Intro + Consent ===
+function renderIntro() {
+    state.step = "intro";
+    clearContent();
+    renderProgress("Samm 1/4 — Sissejuhatus", 10);
+    const root = document.getElementById("content");
+    root.appendChild(el("div", { class: "card", html: `
+        <h1>Intervjuude hindamise uuring</h1>
+        <p><strong>Tere!</strong></p>
+        <p>Suur tänu, et oled nõus selles uuringus osalema. Käesolev uuring on osa minu magistritööst.</p>
+        <p>Sulle esitatakse kaks intervjuu transkriptsiooni, mis käsitlevad teenusedisaini ja kasutajakesksete praktikate kasutuselevõttu Eesti ettevõtetes. Sinu ülesanne on lugeda mõlemad intervjuud läbi ja hinnata nende sisu erinevaid aspekte 5-pallisel skaalal.</p>
+        <div class="notice">
+            <strong>NB!</strong> Ära otsi "õigeid" vastuseid — hinda oma sisetunde järgi, kuidas need vastused sulle mõjuvad.
+        </div>
+        <p>Intervjuud on jaotatud teemaplokkideks (PLOKK 1 kuni PLOKK 7). Iga ploki all on küsimused ja vastused, millele järgneb hindamisskaala.</p>
+        <p><strong>Tähtis:</strong> Loe iga plokk hoolikalt läbi ja hinda kohe selle all olevat skaalat, kui info on värskelt meeles.</p>
+        <h3>Ajakulu</h3>
+        <p>Kogu uuring võtab orienteeruvalt 30–45 minutit.</p>
+        <h3>Nõusolek</h3>
+        <p>Osalemine on vabatahtlik ja anonüümne. Sinu vastuseid kasutatakse ainult teaduslikel eesmärkidel.</p>
+        <div class="consent-options">
+            <label><input type="radio" name="consent" value="yes"> Olen nõus osalema</label>
+            <label><input type="radio" name="consent" value="no"> Ei soovi osaleda</label>
+        </div>
+    `}));
+    const btn = el("button", { class: "btn", onclick: handleConsent }, "Edasi");
+    root.appendChild(btn);
+}
+
+function handleConsent() {
+    const sel = document.querySelector('input[name="consent"]:checked');
+    if (!sel) { alert("Palun vali üks variant."); return; }
+    if (sel.value === "no") {
+        clearContent();
+        renderProgress("", 0);
+        document.getElementById("content").appendChild(el("div", { class: "card", html: `
+            <h1>Aitäh!</h1>
+            <p>Kahju, et seekord ei osale. Kui muudad meelt, võid alati lehe uuesti avada.</p>
+        `}));
+        return;
+    }
+    state.consent = "yes";
+    renderInterview(0);
+}
+
+// === Render Interview ===
+function renderInterview(idx) {
+    state.step = "interview_" + idx;
+    clearContent();
+    const stepNum = idx === 0 ? 2 : 3;
+    renderProgress(`Samm ${stepNum}/4 — Intervjuu ${idx + 1}/2`, 25 + idx * 35);
+    const interview = INTERVIEWS[idx];
+    const root = document.getElementById("content");
+
+    root.appendChild(el("div", { class: "card", html: `
+        <p class="meta">Intervjuu ${idx + 1} / 2</p>
+        <h1>Järgneb intervjuu transkriptsioon</h1>
+        <p>Loe iga plokk hoolikalt läbi ja hinda kohe selle all olevat skaalat, enne kui järgmisesse plokki liigud.</p>
+        <p>Intervjuu on jaotatud 7 plokiks. Esimene plokk (sissejuhatus ja taust) on ilma hindamiseta — loe lihtsalt läbi.</p>
+    `}));
+
+    interview.blocks.forEach(block => {
+        const card = el("div", { class: "card" });
+        card.innerHTML = `
+            <p class="meta">Plokk ${block.nr} / 7</p>
+            <h2>PLOKK ${block.nr}. ${escapeHtml(block.title)}</h2>
+            ${block.tpb ? `<p class="tpb">${escapeHtml(block.tpb)}</p>` : ""}
+        `;
+        block.qa.forEach(qa => {
+            if (qa.type === "k") {
+                const div = el("div", { class: "qa" });
+                div.innerHTML = `
+                    <p class="question"><strong>${escapeHtml(qa.k)}:</strong> ${escapeHtml(qa.q)}</p>
+                    <p class="answer"><strong>Vastaja:</strong> ${escapeHtml(qa.a)}</p>
+                `;
+                card.appendChild(div);
+            } else {
+                const div = el("div", { class: "qa intervjueerija" });
+                div.innerHTML = `
+                    <p class="question"><strong>${escapeHtml(qa.k)}:</strong> ${escapeHtml(qa.q)}</p>
+                    <p class="answer"><strong>Vastaja:</strong> ${escapeHtml(qa.a)}</p>
+                `;
+                card.appendChild(div);
+            }
+        });
+
+        if (block.nr >= 2 && block.nr <= 7) {
+            const ratingBox = renderRatingBox(idx, interview.id, block.nr);
+            card.appendChild(ratingBox);
+        }
+        root.appendChild(card);
+    });
+
+    // Block 8 — quality + block 9 — overall
+    const generalCard = el("div", { class: "card" });
+    generalCard.innerHTML = `
+        <p class="meta">Intervjuu kvaliteet ja üldmulje</p>
+        <h2>PLOKK 8. Vastuste loomulikkus ja kvaliteet</h2>
+        <p>Selles plokis hindad intervjuu üldist kvaliteeti terves ulatuses.</p>
+    `;
+    generalCard.appendChild(renderRatingBox(idx, interview.id, 8));
+    generalCard.appendChild(renderRatingBox(idx, interview.id, 9));
+    root.appendChild(generalCard);
+
+    // Block 9 — open questions
+    const textCard = el("div", { class: "card" });
+    textCard.innerHTML = `
+        <p class="meta">Lahtised küsimused</p>
+        <h2>PLOKK 9. Lahtised küsimused</h2>
+        <p>Palun vasta lühidalt järgmistele küsimustele. Vabatekstid on vabatahtlikud, kuid väga abiks.</p>
+        <div class="form-field">
+            <label>9.3 — Kas midagi tundus selles intervjuus ebatavaline, tehislik või ebaloomulik? Kui jah, siis mis täpselt?</label>
+            <textarea id="feedback-${idx}-93" rows="4"></textarea>
+        </div>
+        <div class="form-field">
+            <label>9.4 — Mis oli selle intervjuu kõige tugevam koht? Mis oli kõige nõrgem?</label>
+            <textarea id="feedback-${idx}-94" rows="4"></textarea>
+        </div>
+        <div class="form-field">
+            <label>9.5 — Kui peaksid pakkuma, kas see intervjuu on tehtud päris inimesega või tehisintellektiga, siis kumba sa arvaksid? Miks?</label>
+            <textarea id="feedback-${idx}-95" rows="4"></textarea>
+        </div>
+    `;
+    root.appendChild(textCard);
+
+    // Button
+    const btnCard = el("div", { class: "card" });
+    const errDiv = el("div", { id: `interview-error-${idx}` });
+    btnCard.appendChild(errDiv);
+    const btn = el("button", {
+        class: "btn",
+        onclick: () => validateAndContinue(idx)
+    }, idx === 0 ? "Edasi teise intervjuu juurde →" : "Edasi kokkuvõttesse →");
+    btnCard.appendChild(btn);
+    root.appendChild(btnCard);
+    window.scrollTo(0, 0);
+}
+
+function renderRatingBox(interviewIdx, interviewId, blockNr) {
+    const blockData = RATING_STATEMENTS[String(blockNr)];
+    if (!blockData) return el("div");
+    const box = el("div", { class: "rating-box" });
+    box.innerHTML = `<h4>✏️ HINDAMINE: ${escapeHtml(blockData.title)}</h4><p class="scale-info">Skaala: 1 = ei nõustu üldse · 2 = pigem ei nõustu · 3 = nii ja naa · 4 = pigem nõustun · 5 = nõustun täielikult</p>`;
+    blockData.items.forEach(([code, text]) => {
+        const item = el("div", { class: "rating-item" });
+        const rName = `r_${interviewIdx}_${interviewId}_${code}`;
+        item.innerHTML = `
+            <p><strong>${code}</strong> — ${escapeHtml(text)}</p>
+            <div class="rating-scale">
+                ${[1,2,3,4,5].map(v => `<label><input type="radio" name="${rName}" value="${v}"><span class="num">${v}</span></label>`).join("")}
+            </div>
+        `;
+        box.appendChild(item);
+    });
+    return box;
+}
+
+function validateAndContinue(idx) {
+    const interview = INTERVIEWS[idx];
+    // Collect ratings
+    const missing = [];
+    [2,3,4,5,6,7,8,9].forEach(blockNr => {
+        const blockData = RATING_STATEMENTS[String(blockNr)];
+        if (!blockData) return;
+        blockData.items.forEach(([code, _]) => {
+            const rName = `r_${idx}_${interview.id}_${code}`;
+            const sel = document.querySelector(`input[name="${rName}"]:checked`);
+            if (sel) {
+                state.ratings[`${interview.id}_${code}`] = parseInt(sel.value);
+            } else {
+                missing.push(code);
+            }
+        });
+    });
+
+    // Collect feedback
+    ["93","94","95"].forEach(q => {
+        const ta = document.getElementById(`feedback-${idx}-${q}`);
+        if (ta && ta.value.trim()) {
+            state.feedback[`${interview.id}_${q}`] = ta.value.trim();
+        }
+    });
+
+    if (missing.length > 0) {
+        const errDiv = document.getElementById(`interview-error-${idx}`);
+        errDiv.innerHTML = `<div class="error-msg">Palun hinda kõik väited. Puudu on: ${missing.join(", ")}</div>`;
+        return;
+    }
+
+    if (idx === 0) {
+        renderInterview(1);
+    } else {
+        submitResults();
+    }
+}
+
+async function submitResults() {
+    clearContent();
+    renderProgress("Samm 4/4 — Saatmine", 95);
+    const root = document.getElementById("content");
+    root.appendChild(el("div", { class: "card", html: `<h1>Saadan vastuseid...</h1><p>Palun oota hetk.</p>` }));
+
+    const payload = {
+        pair: state.pair,
+        order: state.order,
+        interview_1_id: INTERVIEWS[0].id,
+        interview_2_id: INTERVIEWS[1].id,
+        ratings: state.ratings,
+        feedback: state.feedback,
+        duration_sec: Math.round((Date.now() - state.startTime) / 1000),
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        const resp = await fetch(FORMSPREE_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+            renderThankYou();
+        } else {
+            throw new Error("Server error: " + resp.status);
+        }
+    } catch (err) {
+        clearContent();
+        renderProgress("Viga", 95);
+        document.getElementById("content").appendChild(el("div", { class: "card", html: `
+            <h1>Viga saatmisel</h1>
+            <div class="error-msg">${escapeHtml(err.message)}</div>
+            <p>Palun proovi uuesti või võta uurijaga ühendust.</p>
+            <pre style="font-size:11px;overflow:auto;max-height:200px">${escapeHtml(JSON.stringify(payload, null, 2))}</pre>
+        `}));
+    }
+}
+
+function renderThankYou() {
+    clearContent();
+    renderProgress("Valmis!", 100);
+    document.getElementById("content").appendChild(el("div", { class: "card", html: `
+        <h1>Aitäh osalemise eest!</h1>
+        <div class="success-msg"><strong>Sinu vastused on edukalt saadetud.</strong></div>
+        <p>Sinu hinnangud aitavad oluliselt kaasa minu magistritöö valmimisele.</p>
+        <p>Kui sul on küsimusi uuringu kohta või soovid teada tulemusi, võid minuga ühendust võtta.</p>
+        <p style="margin-top: 32px;"><strong>Veel kord suur aitäh!</strong><br>Katrin Primak</p>
+    `}));
+}
+
+renderIntro();
+</script>
+</body>
+</html>
