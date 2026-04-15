@@ -392,30 +392,17 @@ async function submitResults() {
 }
 
 function renderThankYou() {
-  clearContent();
-  renderProgress("Valmis!", 100);
-  document.getElementById("content").appendChild(el("div", { class: "card", html: `
-    <h1>Aitäh osalemise eest!</h1>
-    <div class="success-msg"><strong>Sinu vastused on edukalt saadetud.</strong></div>
-    <p>Sinu hinnangud aitavad oluliselt kaasa minu magistritöö valmimisele.</p>
-    <p>Kui sul on küsimusi uuringu kohta või soovid teada tulemusi, võid minuga ühendust võtta.</p>
-    <p style="margin-top: 32px;"><strong>Veel kord suur aitäh!</strong><br>Katrin Primak</p>
-
-    <div style="text-align:center; margin-top:40px;">
-      <a href="index.html" style="
-        display:inline-block;
-        padding:12px 20px;
-        background:#4f46e5;
-        color:white;
-        text-decoration:none;
-        border-radius:6px;
-        font-weight:bold;
-      ">
-        🔁 Vali uus intervjuu paar
-      </a>
-    </div>
-  `}));
+    clearContent();
+    renderProgress("Valmis!", 100);
+    document.getElementById("content").appendChild(el("div", { class: "card", html: `
+        <h1>Aitäh osalemise eest!</h1>
+        <div class="success-msg"><strong>Sinu vastused on edukalt saadetud.</strong></div>
+        <p>Sinu hinnangud aitavad oluliselt kaasa minu magistritöö valmimisele.</p>
+        <p>Kui sul on küsimusi uuringu kohta või soovid teada tulemusi, võid minuga ühendust võtta.</p>
+        <p style="margin-top: 32px;"><strong>Veel kord suur aitäh!</strong><br>Katrin Primak</p>
+    `}));
 }
+
 renderIntro();
 </script>
 </body>
